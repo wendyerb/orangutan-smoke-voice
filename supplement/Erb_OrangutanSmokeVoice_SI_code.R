@@ -1,6 +1,7 @@
 library(tidyverse)
 
-setwd("/Users/Wendy/github/smoke_lc/data")
+setwd('/Users/Me/github/orangutan-smoke-voice/supplement')
+
 smoke <- read.csv('PM10_FireHotspot_PKY.csv')
 
 ## Model building using fire hotspots and PM10 data for Palangkaraya
@@ -58,53 +59,4 @@ predictlogPM10 <- predict(model.raw, newdata = a)
 
 ## Save results of Tuanan PM10 estimated values as csv file
 write.csv(predictlogPM10,'tuanan_hotspot-to-pm10_50km.csv')
-
-
-
-
-
-
-
-colnames(avg) <- "fire"
-p.log <-  as.data.frame(log(1455))
-colnames(p.log) <- "log.fire"
-
-## Predict
-predict(model.ordernorm, newdata = p)
-## Output = 6.081766 
-PM10.predict <- 6.081766^10
-PM10.predict
-
-model.on <- lm(BN_PM10 ~ BN_fire, data = smoke.transform) # Adjusted R-squared:  0.7182
-summary(model.on)
-predict(model.on, newdata = p)
-overdispersion(model.on, smoke)
-require(DHARMa)
-fittedModel=model.on
-simulationOutput=simulateResiduals(fittedModel=fittedModel)
-plot(simulationOutput)
-
-x <-  as.data.frame(600)
-colnames(x) <- "fire"
-predict(model.raw, newdata = x) ## Output = 354.6858 
-
-
-model.raw <- lm(PM10 ~ fire, data = smoke) # Adjusted R-squared:  0.776
-summary(model.raw)
-
-predict(model.raw, newdata = p) ## Output = 819.6423 
-predict(model.raw, newdata = q) ## Output = 325.3201 
-predict(model.raw, newdata = r) ## Output = 1453.723
-predict(model.raw, newdata = s) ## Output = 338.9154
-predict(model.raw, newdata = t) ## Output = 1453.723
-
-
-model.log <- lm(log.PM10 ~ log.fire, data = smoke.transform) # Adjusted R-squared:  0.7289
-summary(model.log)
-predict(model.log, newdata = p)
-overdispersion(model.log, smoke.transform)
-require(DHARMa)
-fittedModel=model.log
-simulationOutput=simulateResiduals(fittedModel=fittedModel)
-plot(simulationOutput)
 
